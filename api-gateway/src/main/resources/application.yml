@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: contacts-service
+              uri: ${CONTACTS_SERVICE_URL:http://localhost:8081}
+              predicates:
+                - Path=/v1/contacts/**
+            - id: accounts-service
+              uri: ${ACCOUNTS_SERVICE_URL:http://localhost:8082}
+              predicates:
+                - Path=/v1/accounts/**
+            - id: transfers-service
+              uri: ${TRANSFERS_SERVICE_URL:http://localhost:8083}
+              predicates:
+                - Path=/v1/transfers/**
+          # /internal/** endpoints are intentionally NOT routed: they are service-to-service only.
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway

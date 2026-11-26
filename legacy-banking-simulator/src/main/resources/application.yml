@@ -1,0 +1,14 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: legacy-banking-simulator
+  webservices:
+    path: /ws                    # SOAP endpoints will live under /ws (Stage 4)
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

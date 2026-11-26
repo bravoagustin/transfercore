@@ -1,0 +1,28 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: accounts-service
+  datasource:
+    # Defaults allow running from the IDE against the Postgres container (docker compose up postgres)
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/accounts_db
+    username: ${DB_USER:accounts}
+    password: ${DB_PASSWORD:accounts}
+  jpa:
+    open-in-view: false          # avoid lazy-loading queries during view rendering
+    hibernate:
+      ddl-auto: validate         # Flyway owns the schema; Hibernate only checks it
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
